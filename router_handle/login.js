@@ -5,6 +5,7 @@ const jwtconfig = require("../jwt_config/index.js"); // 导入jwt配置文件，
 
 /**
  *  注册接口
+ * @exports 是一个对象,为其添加属性方法，这些属性方法都会被导出
  * @param {*} req 前端传入数据
  * @param {*} res 返回前端数据
  * @returns
@@ -91,7 +92,8 @@ exports.login = (req, res) => {
       create_time: "",
       update_time: "",
     };
-    // 设置token的有效时长 有效期为7个小时
+    // 生成token,设置token的有效时长
+    // jwt.sign(加密的数据，签名的密钥，配置项)
     const tokenStr = jwt.sign(user, jwtconfig.jwtSecretKey, {
       expiresIn: "7h",
     });
