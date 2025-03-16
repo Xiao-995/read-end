@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken"); // 导入jwt,用于生成token
 const jwtconfig = require("../jwt_config/index.js"); // 导入jwt配置文件，用于加密跟解密
 
 /**
- *  注册接口
+ *  注册
  * @exports 是一个对象,为其添加属性方法，这些属性方法都会被导出
  * @param {*} req 前端传入数据
  * @param {*} res 返回前端数据
@@ -63,6 +63,9 @@ exports.register = (req, res) => {
   });
 };
 
+/**
+ * 登录
+ */
 exports.login = (req, res) => {
   const loginfo = req.body;
   // 查看数据表中有没有前端传过来的账号
