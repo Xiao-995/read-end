@@ -28,20 +28,30 @@ const newPassword = joi
   .max(12)
   .required();
 
+// 姓名
 exports.name_limit = {
   body: {
     name,
   },
 };
+// 邮箱
 exports.email_limit = {
   body: {
     email,
   },
 };
+// 密码
 exports.password_limit = {
   body: {
     id,
     oldPassword,
+    newPassword,
+  },
+};
+// 找回密码
+exports.forgetPassword = {
+  body: {
+    id,
     newPassword,
   },
 };

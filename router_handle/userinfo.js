@@ -148,3 +148,45 @@ exports.changePassword = (req, res) => {
     });
   });
 };
+
+/**
+ * 忘记密码：验证账号邮箱
+ * @param {*id *email *account}
+ */
+exports.forgetPassword = (req, res) => {
+  const { account, email } = req.body;
+  // 通过账号验证邮箱
+  const sql = "select email from users where account=?";
+  db.query(sql, account, (error, result) => {
+    if (error) return res.cc(error);
+    if (email == result[0].email) {
+      res.send({
+        status: 0,
+        message: "查询成功",
+      });
+    } else {
+      res.send({
+        status: 1,
+        message: "查询失败",
+      });
+    }
+  });
+};
+
+/**
+ * 修改密码
+ * @param {*newPassword *id}
+ */
+exports.changeLoginPassword = (req, res) => {
+  let { newPassword, id } = req.body;
+  // 加密密码
+  newPassword = bcrypt.hashSync(newPassword, 10);
+  const sql = "update users set password=? where id=?";
+  db.query(sql, [newPassword, id], (error, result) => {
+    if (error) return res.cc(error);
+    res.send({
+      status: 0,
+      message: "找回密码成功",
+    });
+  });
+};
