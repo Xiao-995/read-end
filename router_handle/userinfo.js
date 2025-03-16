@@ -118,3 +118,33 @@ exports.changeEmail = (req, res) => {
     });
   });
 };
+
+/**
+ * 修改用户密码
+ * @param {*oldPassword *newPassword *id}
+ */
+exports.changePassword = (req, res) => {
+  let { id, oldPassword, newPassword } = req.body;
+  const sql = "select password from users where id=?";
+  db.query(sql, id, (error, result) => {
+    if (error) return res.cc(error);
+    // 比较旧密码是否与数据库相同
+    const compareResult = bcrypt.compareSync(oldPassword, result[0].password);
+    if (!compareResult) {
+      return res.send({
+        status: 1,
+        message: "原密码错误",
+      });
+    }
+    // 对新密码进行加密
+    newPassword = bcrypt.hashSync(newPassword, 10);
+    const sql1 = "update users set password=?where id=?";
+    db.query(sql1, [newPassword, id], (error, result) => {
+      if (error) return res.cc(error);
+      res.send({
+        status: 0,
+        message: "修改密码成功",
+      });
+    });
+  });
+};

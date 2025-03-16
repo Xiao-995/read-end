@@ -8,9 +8,24 @@ const name = joi
   .required();
 
 const id = joi.required();
+
 const email = joi
   .string()
   .pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
+  .required();
+
+const oldPassword = joi
+  .string()
+  .pattern(/^(?![0-9]+$)[a-z0-9]{1,50}$/)
+  .min(6)
+  .max(12)
+  .required();
+
+const newPassword = joi
+  .string()
+  .pattern(/^(?![0-9]+$)[a-z0-9]{1,50}$/)
+  .min(6)
+  .max(12)
   .required();
 
 exports.name_limit = {
@@ -21,5 +36,12 @@ exports.name_limit = {
 exports.email_limit = {
   body: {
     email,
+  },
+};
+exports.password_limit = {
+  body: {
+    id,
+    oldPassword,
+    newPassword,
   },
 };
