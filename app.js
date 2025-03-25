@@ -50,10 +50,13 @@ app.use(bodyParser.json()); // 解析JOSN格式数据
 
 // 登录注册模块
 const LoginRouter = require("./router/login");
-// 用户头像上传模块
+// 系统设置--账号详情模块
 const userinfoRouter = require("./router/userinfo");
+// 系统设置--公司信息模块
+const settingRouter = require("./router/setting.js");
 app.use("/api", LoginRouter);
 app.use("/api/user", userinfoRouter);
+app.use("/api/user", settingRouter);
 /**
  * 绑定和监听指定端口
  */

@@ -60,14 +60,15 @@ exports.bindAccount = (req, res) => {
 };
 
 /**
- * 获取用户信息 *
+ * 获取用户信息
  * @param {*id} req
  */
 exports.getUserInfo = (req, res) => {
   const sql = "select * from users where id=?";
   db.query(sql, req.body.id, (error, result) => {
     if (error) return res.cc(error);
-    res.send(result);
+	delete result[0].password
+    res.send(result[0]);
   });
 };
 
@@ -127,7 +128,7 @@ exports.changePassword = (req, res) => {
   let { id, oldPassword, newPassword } = req.body;
   const sql = "select password from users where id=?";
   db.query(sql, id, (error, result) => {
-    if (error) return res.cc(error);
+    if (error) return res.cc(err);
     // 比较旧密码是否与数据库相同
     const compareResult = bcrypt.compareSync(oldPassword, result[0].password);
     if (!compareResult) {
@@ -156,13 +157,14 @@ exports.changePassword = (req, res) => {
 exports.forgetPassword = (req, res) => {
   const { account, email } = req.body;
   // 通过账号验证邮箱
-  const sql = "select email from users where account=?";
+  const sql = "select * from users where account=?";
   db.query(sql, account, (error, result) => {
     if (error) return res.cc(error);
     if (email == result[0].email) {
       res.send({
         status: 0,
         message: "查询成功",
+		id:result[0].id
       });
     } else {
       res.send({
